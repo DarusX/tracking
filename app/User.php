@@ -32,8 +32,21 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($param);
     }
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->surname}";
+    }
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function scopeClients($query)
+    {
+        return $query->whereHas('role', function($query) {
+            $query->where('role', 'Client');
+        });
+    }
+
+
 }

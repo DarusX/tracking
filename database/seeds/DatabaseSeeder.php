@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Role;
+use App\Status;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,14 +16,36 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
         Role::create([
-            'role' => 'Administrador'
+            'role' => 'Administrator'
         ])->users()->create([
-            'name' => 'Administrador',
+            'name' => 'Administrator',
             'surname' => 'Tracking',
             'phone' => '',
             'address' => '',
             'email' => 'admin@tracking.com',
-            'password' => bcrypt('123456')
+            'password' => '123456'
+        ]);
+        Role::create([
+            'role' => 'Client'
+        ]);
+        Role::create([
+            'role' => 'Worker'
+        ]);
+
+        Status::create([
+            'status' => 'Esperando'
+        ]);
+        Status::create([
+            'status' => 'Reparando'
+        ]);
+        Status::create([
+            'status' => 'Almacenado'
+        ]);
+        Status::create([
+            'status' => 'Entregado'
+        ]);
+        Status::create([
+            'status' => 'Finalizado'
         ]);
     }
 }

@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use App\User;
-use App\Role;
+use App\Status;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class JobController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index')->with([
-            'users' => User::all()
+        return view('jobs.index')->with([
+            'statuses' => Status::all()
         ]);
     }
 
@@ -32,8 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create')->with([
-            'roles' => Role::all()
+        return view('jobs.create')->with([
+            'clients' => User::clients()->get()
         ]);
     }
 
@@ -45,17 +41,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->all());
+        Job::create($request->all());
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Job $job)
     {
         //
     }
@@ -63,37 +59,33 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Job $job)
     {
-        return view('users.edit')->with([
-            'roles' => Role::all(),
-            'user' => $user
-        ]);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Job $job)
     {
-        $user->update($request->all());
-        return redirect()->back();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Job $job)
     {
         //
     }

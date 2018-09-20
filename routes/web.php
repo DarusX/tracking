@@ -16,7 +16,8 @@ Route::get('/', function () {
 });
 
 Route::resources([
-    'users' => 'UserController'
+    'users' => 'UserController',
+    'jobs' => 'JobController'
 ]);
 
 Auth::routes();
