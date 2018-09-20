@@ -21,6 +21,7 @@ class CreateJobsTable extends Migration
             $table->integer('owner_id')->unsigned();
             $table->integer('repairer_id')->unsigned()->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('owner_id')->references('id')->on('users');
             $table->foreign('repairer_id')->references('id')->on('users');

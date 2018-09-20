@@ -6,6 +6,7 @@ use App\Job;
 use App\User;
 use App\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -41,7 +42,9 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        Job::create($request->all());
+        Job::create($request->all())->logs()->create([
+            'status_id' => Status::whereStatus('Esperando')->first()->id
+        ]);
         return redirect()->back();
     }
 
@@ -53,7 +56,9 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        return view('jobs.show')->with([
+            'job' => $job
+        ]);
     }
 
     /**
@@ -64,7 +69,10 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        //
+        return view('jobs.edit')->with([
+            'job' => $job,
+            'statuses' => Status::all()
+        ]);
     }
 
     /**
@@ -76,7 +84,11 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        DB::transaction(function() use($request, $job){
+            if ($job->status_id != $request->status_id) $job->logs()->create(['status_id' => $request->status_id]);
+            $job->update($request->all());
+        });
+        return redirect()->route('jobs.show', $job);
     }
 
     /**
