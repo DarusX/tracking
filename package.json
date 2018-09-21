@@ -20,6 +20,8 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.3.1"
+        "@fortawesome/fontawesome-free": "^5.3.1",
+        "sweetalert": "^2.1.0",
+        "sweetalert2": "^7.26.29"
     }
 }

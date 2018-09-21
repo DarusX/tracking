@@ -24,6 +24,7 @@ class Job extends Model
 
         self::creating(function ($job){
             $job->status_id = Status::whereStatus('Esperando')->first()->id;
+            $job->code = substr(md5(time()), 0, 10);
         });
     }
 

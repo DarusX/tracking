@@ -27,6 +27,13 @@ class DatabaseSeeder extends Seeder
         ]);
         Role::create([
             'role' => 'Client'
+        ])->users()->create([
+            'name' => 'Cliente',
+            'surname' => 'Tracking',
+            'phone' => '123456789',
+            'address' => 'Calle 1, col Abc, Ciudad, Estado',
+            'email' => 'client@tracking.com',
+            'password' => '123456'
         ]);
         Role::create([
             'role' => 'Worker'

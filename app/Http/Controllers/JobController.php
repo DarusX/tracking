@@ -7,9 +7,15 @@ use App\User;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Session;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +24,7 @@ class JobController extends Controller
     public function index()
     {
         return view('jobs.index')->with([
-            'statuses' => Status::all()
+            'statuses' => Status::whereHas('jobs')->whereNotIn('status', ['Entregado', 'Finalidazo'])->get()
         ]);
     }
 
@@ -42,10 +48,9 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        Job::create($request->all())->logs()->create([
-            'status_id' => Status::whereStatus('Esperando')->first()->id
-        ]);
-        return redirect()->back();
+        $job = Job::create($request->all());
+        Session::flash('msg', 'Job saved');
+        return redirect()->route('jobs.show', $job);
     }
 
     /**
@@ -71,7 +76,10 @@ class JobController extends Controller
     {
         return view('jobs.edit')->with([
             'job' => $job,
-            'statuses' => Status::all()
+            'statuses' => Status::all(),
+            'workers' => User::workers()->when(Auth::user()->role->role == 'Worker', function($query){
+                return $query->whereId(Auth::id());
+            })->get()
         ]);
     }
 
@@ -84,10 +92,14 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
+        $this->validate($request, [
+            'repairer_id' => 'required'
+        ]);
         DB::transaction(function() use($request, $job){
             if ($job->status_id != $request->status_id) $job->logs()->create(['status_id' => $request->status_id]);
             $job->update($request->all());
         });
+        Session::flash('msg', 'Job updated');
         return redirect()->route('jobs.show', $job);
     }
 
@@ -99,6 +111,14 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        Session::flash('msg', 'Job deleted');
+    }
+
+    public function search($code)
+    {
+        return view('jobs.show')->with([
+            'job' => Job::whereCode($code)->first()
+        ]);
     }
 }

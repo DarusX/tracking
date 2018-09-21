@@ -19,7 +19,9 @@ Route::resources([
     'users' => 'UserController',
     'jobs' => 'JobController'
 ]);
-
+    
 Auth::routes();
-
+    
 Route::get('/home', 'HomeController@index')->name('home');
+    
+Route::get('/{code}', 'JobController@search');

@@ -5,21 +5,50 @@
         <div class="col-md-12">
             <h1 class="title">{{ __('Users') }}</h1>
         </div>
-        @foreach($users as $user)
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-user-alt"></i> {{$user->full_name}}</h5>
-                    <p class="card-text"><i class="fas fa-envelope"></i> {{$user->email}}</p>
-                    <p class="card-text"><i class="fas fa-user-cog"></i> {{$user->role->role}}</p>
-                    <p class="card-text"><i class="fas fa-mobile-alt"></i> {{$user->phone}}</p>
-                    <p class="card-text"><i class="fas fa-map-marker"></i> {{$user->address}}</p>
-
-                    <a href="{{route('users.edit', $user)}}" class="btn btn-warning"><i class="fas fa-pen-alt"></i> {{__('Edit')}}</a>
-                </div>
-            </div>
+        <div class="col-md-12">
+                <div class="accordion" id="accordionRoles">
+                        @foreach($roles as $role)
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-dark btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapse{{$role->role}}">
+                                        {{$role->role}}
+                                    </button>
+                                </h5>
+                            </div>
+            
+                            <div id="collapse{{$role->role}}" class="collapse" data-parent="#accordionRoles">
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead class="bg-dark text-white">
+                                            <tr>
+                                                <th>{{__('Name')}}</th>
+                                                <th>{{__('Email')}}</th>
+                                                <th>{{__('Phone')}}</th>
+                                                <th>{{__('Actions')}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($role->users as $user)
+                                            <tr>
+                                                <td>{{$user->full_name}}</td>
+                                                <td>{{$user->email}}</td>
+                                                <td>{{$user->phone}}</td>
+                                                <td>
+                                                    <a href="{{route('users.show', $user)}}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a>
+                                                    <a href="{{route('users.edit', $user)}}" class="btn btn-sm btn-warning"><i class="fas fa-pen"></i></a>
+                                                    <a href="{{route('users.destroy', $user)}}" class="btn btn-sm btn-danger destroy"><i class="fas fa-times"></i></a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
         </div>
-        @endforeach
     </div>
 </div>
 @endsection

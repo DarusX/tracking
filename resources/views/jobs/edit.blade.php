@@ -24,14 +24,26 @@
                 </div>
                 <legend>{{__('Status')}}</legend>
                 <div class="form-group">
-                        <label for="">{{__('Status')}}</label>
-                        <select name="status_id" class="form-control form-control-sm">
-                            @foreach($statuses as $status)
-                            <option value="{{$status->id}}" {{($job->status == $status)?'selected':''}}>{{$status->status}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label for="">{{__('Status')}}</label>
+                    <select name="status_id" class="form-control form-control-sm">
+                        @foreach($statuses as $status)
+                        <option value="{{$status->id}}" {{($job->status == $status)?'selected':''}}>{{$status->status}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <legend>{{__('Worker')}}</legend>
                 <div class="form-group">
+                    <label for="">{{__('Worker')}}</label>
+                    <select name="repairer_id" class="form-control form-control-sm">
+                        <option></option>
+                        @foreach($workers as $worker)
+                        <option value="{{$worker->id}}" {{($job->repairer == $worker)?'selected':''}}>{{$worker->full_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <a href="{{route('jobs.index')}}" class="btn btn-sm btn-danger"><i class="fas fa-times"></i>
+                        {{__('Cancel')}}</a>
                     <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i> {{__('Save')}}</button>
                 </div>
             </form>

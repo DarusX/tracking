@@ -10,8 +10,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+   
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -27,5 +26,26 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Scripts -->
+    @if(Session::has('msg'))
+    <script>
+        swal({
+            text: "{{Session::get('msg')}}",
+            icon: "success"
+        })
+    </script>
+    @endif
+    @if(Session::has('errors'))
+    @foreach($errors->all() as $error)
+    <script>
+        swal({
+            text: "{{$error}}",
+            icon: "error"
+        })
+    </script>
+    @endforeach
+    @endif
 </body>
 </html>

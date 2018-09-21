@@ -5,7 +5,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+
+import './bootstrap'
 
 /**
 window.Vue = require('vue');
@@ -35,6 +36,35 @@ jQuery(".logout").click((event) => {
         method: "POST",
         success: (data) => {
             location.reload()
+        },
+        
+    })
+})
+
+jQuery(".destroy").click(function(event){
+    event.preventDefault()
+    swal({
+        text: "¿Estás seguro?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    }).then((confirm) => {
+        if(confirm){
+            $.ajax({
+                url: $(this).attr("href"),
+                method: "DELETE",
+                //data: {_method: "DELETE"},
+                success: (data) => {
+                    location.reload()
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown ){
+                let response = JSON.parse(jqXHR.responseText)
+                swal({
+                    title: errorThrown,
+                    text: response.message,
+                    icon: "error"
+                })
+            })
         }
     })
 })

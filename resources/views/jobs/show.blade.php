@@ -4,9 +4,15 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="title">{{__('Job')}}</h1>
+            <a href="{{route('jobs.index')}}" class="btn btn-sm btn-dark"><i class="fas fa-history"></i> {{__('Back')}}</a>
+            <a href="{{route('jobs.edit', $job)}}" class="btn btn-sm btn-dark"><i class="fas fa-pen"></i> {{__('Edit')}}</a>
         </div>
         <div class="col-md-4">
             <h2 class="title">{{__('Device')}}</h2>
+            <div class="form-group">
+                <label for="">{{__('Code')}}</label>
+                <input type="text" class="form-control" value="{{$job->code}}" readonly>
+            </div>
             <div class="form-group">
                 <label for="">{{__('Brand')}}</label>
                 <input type="text" class="form-control" value="{{$job->brand}}" readonly>

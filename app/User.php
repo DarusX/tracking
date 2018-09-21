@@ -44,7 +44,13 @@ class User extends Authenticatable
     public function scopeClients($query)
     {
         return $query->whereHas('role', function($query) {
-            $query->where('role', 'Client');
+            $query->whereRole('Client');
+        });
+    }
+    public function scopeWorkers($query)
+    {
+        return $query->whereHas('role', function($query) {
+            $query->whereRole('Worker');
         });
     }
 
